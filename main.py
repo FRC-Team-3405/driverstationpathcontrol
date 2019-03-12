@@ -9,7 +9,8 @@ clock = pygame.time.Clock()
 playingfieldimg = pygame.Surface((750, 616))
 playingfieldimg.blit(pygame.image.load("playingfield.jpeg"), (0, 0))
 
-GAME_FONT = pygame.freetype.SysFont("Arial", 18)
+MAIN_FONT = pygame.freetype.SysFont("Serif", 18)
+LABEL_FONT = pygame.freetype.SysFont("Monospace", 16, bold=True)
 
 NetworkTables.initialize(server='roborio-3405-frc.local')
 table = NetworkTables.getTable('SmartDashboard')
@@ -53,9 +54,9 @@ def draw():
     # Draw an information panel giving details about the currently queued and selected paths.
     pygame.draw.rect(window, (0, 0, 0), (0, 0, 200, 350))
     if point1.id != dummy.id and point2.id != dummy.id:
-        GAME_FONT.render_to(window, (15, 15), "Path: " + point1.id + "-" + point2.id, (255, 0, 0))
-    GAME_FONT.render_to(window, (15, 40), "Queued path: " + table.getString("path", "x"), (0, 255, 0))
-    GAME_FONT.render_to(window, (15, 60), "Current path: " + table.getString("current_path", "x"), (0, 0, 255))
+        MAIN_FONT.render_to(window, (15, 15), "Path: " + point1.id + "-" + point2.id, (255, 0, 0))
+    MAIN_FONT.render_to(window, (15, 40), "Queued path: " + table.getString("path", "x"), (0, 255, 0))
+    MAIN_FONT.render_to(window, (15, 60), "Current path: " + table.getString("current_path", "x"), (0, 0, 255))
 
     # Draw all the points
     for i in listofpoints:
@@ -63,10 +64,11 @@ def draw():
             pygame.draw.circle(window, (0, 255, 0), i.pos, 15)
         elif i.id == point2.id:
             pygame.draw.circle(window, (255, 0, 0), i.pos, 15)
-        elif i.active:
+        elif i.active and i.group != point1.group:
             pygame.draw.circle(window, (0, 0, 255), i.pos, 15)
         else:
             pygame.draw.circle(window, (150, 150, 150), i.pos, 10)
+        LABEL_FONT.render_to(window, (i.pos[0] - 5, i.pos[1] - 5), i.id, (0, 0, 0))
 
 
 def edit():
