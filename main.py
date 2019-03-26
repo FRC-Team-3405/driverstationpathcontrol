@@ -44,7 +44,7 @@ def activate():
                 if point1 == dummy:
                     point1 = i
                 elif point2 == dummy:
-                    if point1.group != i.group:
+                    if point1.group != i.group and (i.id != "E" and i.id != "I") or i.group == "load":
                         point2 = i
         else:
             i.active = False
